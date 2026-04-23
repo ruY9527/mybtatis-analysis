@@ -1,3 +1,48 @@
+# MyBatis 配置文件解析分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [上一模块：HelloWorld流程](../mybatis-work-flow) | [下一模块：Mapper解析](../mybatis-mapper-xml)
+
+---
+
+## 📖 模块简介
+
+本模块深入分析 `mybatis-config.xml` 配置文件的解析过程，逐标签剖析 MyBatis 如何将 XML 配置转化为运行时对象。
+
+## 🔑 核心标签解析
+
+| 标签 | 核心方法 | 说明 |
+|-----|----------|------|
+| `<properties>` | `propertiesElement()` | 外部配置加载 |
+| `<settings>` | `settingsAsProperties()` | 全局设置解析 |
+| `<typeAliases>` | `typeAliasesElement()` | 别名注册 |
+| `<plugins>` | `pluginElement()` | 插件加载 |
+| `<objectFactory>` | `objectFactoryElement()` | 对象工厂配置 |
+| `<environments>` | `environmentsElement()` | 环境与数据源配置 |
+| `<typeHandlers>` | `typeHandlerElement()` | 类型处理器注册 |
+| `<mappers>` | `mapperElement()` | Mapper文件扫描 |
+
+## 🔗 核心源码路径
+
+| 类 | 路径 | 说明 |
+|----|------|------|
+| `XMLConfigBuilder` | `org.apache.ibatis.builder.xml.XMLConfigBuilder` | 配置解析核心类 |
+| `Configuration` | `org.apache.ibatis.session.Configuration` | 全局配置对象 |
+| `TypeAliasRegistry` | `org.apache.ibatis.type.TypeAliasRegistry` | 别名注册中心 |
+| `TypeHandlerRegistry` | `org.apache.ibatis.type.TypeHandlerRegistry` | 类型处理器注册中心 |
+| `InterceptorChain` | `org.apache.ibatis.plugin.InterceptorChain` | 插件拦截链 |
+
+## 🎯 学习要点
+
+1. **解析顺序理解**：各标签的解析顺序及其依赖关系
+2. **Spring对比**：对比 Spring/SpringBoot 配置文件解析方式
+3. **扩展机制**：理解 plugins、objectFactory 等扩展点
+
+---
+
 ## 			MyBatis 解析  xml 配置文件
 
 

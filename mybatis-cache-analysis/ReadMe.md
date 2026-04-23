@@ -1,3 +1,67 @@
+# MyBatis 缓存机制深度分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [上一模块：Mapper解析](../mybatis-mapper-xml) | [下一模块：Spring整合](../mybatis-spring-hello)
+
+---
+
+## 📖 模块简介
+
+本模块深入分析 MyBatis 的缓存机制，包括一级缓存（SqlSession级别）和二级缓存（namespace级别），通过案例和源码分析理解缓存的工作原理、失效条件以及潜在问题。
+
+## 🔑 核心知识点
+
+| 缓存类型 | 作用范围 | 存储结构 | 关键类 |
+|---------|---------|---------|--------|
+| **一级缓存** | SqlSession 内部 | HashMap | `BaseExecutor.localCache` |
+| **二级缓存** | namespace 跨Session | 装饰器模式 | `CachingExecutor`、`TransactionalCache` |
+
+## 📊 缓存执行流程
+
+```
+SQL查询请求
+    ↓
+先检查二级缓存 (namespace级别)
+    ↓ (未命中)
+检查一级缓存 (SqlSession级别)
+    ↓ (未命中)
+查询数据库
+    ↓
+结果写入一级缓存 → 提交后写入二级缓存
+```
+
+## ⚠️ 缓存失效条件
+
+| 操作 | 一级缓存 | 二级缓存 |
+|-----|---------|---------|
+| INSERT/UPDATE/DELETE | ✅ 失效 | ✅ 失效 |
+| sqlSession.close() | ✅ 失效 | 保留（已提交） |
+| sqlSession.clearCache() | ✅ 失效 | 不影响 |
+| 未提交事务 | 不写入 | 不写入 |
+
+## 🔗 核心源码路径
+
+| 功能 | 源码路径 |
+|-----|---------|
+| 一级缓存存储 | `org.apache.ibatis.executor.BaseExecutor#localCache` |
+| 一级缓存清除 | `org.apache.ibatis.executor.BaseExecutor#clearLocalCache` |
+| 二级缓存执行器 | `org.apache.ibatis.executor.CachingExecutor` |
+| 事务缓存装饰器 | `org.apache.ibatis.cache.decorators.TransactionalCache` |
+| 永久缓存实现 | `org.apache.ibatis.cache.impl.PerpetualCache#cache` |
+
+## 🎯 案例分析
+
+| 案例 | 说明 | 关键点 |
+|-----|------|--------|
+| 案例1 | 同SqlSession两次查询 | 一级缓存命中 |
+| 案例2 | 中间穿插update操作 | 缓存失效 |
+| 案例3 | 多SqlSession场景 | 脏数据问题 |
+
+---
+
 ##                              MyBatis 缓存知识
 
 

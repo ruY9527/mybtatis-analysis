@@ -1,3 +1,64 @@
+# MyBatis Mapper XML 文件解析分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [上一模块：配置文件解析](../mybatis-xml-config) | [下一模块：缓存机制](../mybatis-cache-analysis)
+
+---
+
+## 📖 模块简介
+
+本模块深入分析 Mapper XML 文件的解析过程，包括 `<resultMap>` 结果映射、动态 SQL 解析以及 SQL 语句的封装机制。
+
+## 🔑 核心知识点
+
+| 标签 | 核心方法 | 说明 |
+|-----|----------|------|
+| `<resultMap>` | `resultMapElements()` | 结果映射解析 |
+| `<sql>` | `sqlElement()` | SQL片段提取 |
+| `select|insert|update|delete` | `buildStatementFromContext()` | SQL语句解析 |
+| 动态SQL | `XMLScriptBuilder.parseScriptNode()` | 动态SQL判断与处理 |
+
+## 📊 解析流程
+
+```
+<mapper> 标签
+    ↓
+获取 namespace
+    ↓
+解析 cache-ref / cache
+    ↓
+解析 parameterMap / resultMap
+    ↓
+解析 sql 片段
+    ↓
+解析 select|insert|update|delete
+    ↓
+生成 MappedStatement 存入 Configuration
+```
+
+## 🔗 核心源码路径
+
+| 功能 | 源码路径 |
+|-----|---------|
+| Mapper解析入口 | `org.apache.ibatis.builder.xml.XMLMapperBuilder#parse()` |
+| 标签解析 | `org.apache.ibatis.builder.xml.XMLMapperBuilder#configurationElement()` |
+| ResultMap解析 | `org.apache.ibatis.builder.xml.XMLMapperBuilder#resultMapElement()` |
+| SQL语句解析 | `org.apache.ibatis.builder.xml.XMLStatementBuilder#parseStatementNode()` |
+| 动态SQL判断 | `org.apache.ibatis.scripting.xmltags.XMLScriptBuilder#parseScriptNode()` |
+| SQL来源接口 | `org.apache.ibatis.mapping.SqlSource` (RawSqlSource/DynamicSqlSource) |
+
+## 🎯 学习要点
+
+1. **ResultMap**：理解复杂结果映射（constructor、discriminator、嵌套映射）
+2. **动态SQL**：区分 `RawSqlSource` 与 `DynamicSqlSource`
+3. **参数处理**：理解 `#{}` 占位符替换为 `?` 的过程
+4. **MappedStatement**：SQL语句的完整封装对象
+
+---
+
 ## 				MyBatis 的 Mapper文件解析
 
 

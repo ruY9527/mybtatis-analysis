@@ -1,3 +1,80 @@
+# MyBatis + Spring 整合分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![Spring](https://img.shields.io/badge/Spring-5.2.0-green.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [上一模块：缓存机制](../mybatis-cache-analysis) | [下一模块：SpringBoot整合](../mybatis-spring-boot-hello)
+
+---
+
+## 📖 模块简介
+
+本模块分析 MyBatis 与 Spring 的整合过程，通过 `mybatis-spring` 库实现，核心涉及 `SqlSessionFactoryBean` 和 `MapperScannerConfigurer` 两个关键类。
+
+## 🔑 核心知识点
+
+| 类 | 实现接口 | 作用 |
+|----|---------|------|
+| `SqlSessionFactoryBean` | `FactoryBean`、`InitializingBean`、`ApplicationListener` | 创建 SqlSessionFactory |
+| `MapperScannerConfigurer` | `BeanDefinitionRegistryPostProcessor`、`ApplicationContextAware` | 扫描注册 Mapper |
+
+## 📊 整合流程
+
+```
+Spring容器启动
+    ↓
+SqlSessionFactoryBean.afterPropertiesSet()
+    ↓   (构建 SqlSessionFactory)
+    ↓
+MapperScannerConfigurer.postProcessBeanDefinitionRegistry()
+    ↓   (扫描 Mapper 接口)
+    ↓
+修改 BeanDefinition 的 beanClass 为 MapperFactoryBean
+    ↓
+Spring 创建 MapperFactoryBean 实例
+    ↓   (通过 FactoryBean.getObject() 返回代理对象)
+    ↓
+Mapper 代理对象注入 Spring 容器
+```
+
+## 🔗 核心源码路径
+
+| 功能 | 源码路径 |
+|-----|---------|
+| 工厂Bean | `org.mybatis.spring.SqlSessionFactoryBean` |
+| 扫描配置器 | `org.mybatis.spring.mapper.MapperScannerConfigurer` |
+| Mapper工厂 | `org.mybatis.spring.mapper.MapperFactoryBean` |
+| ClassPath扫描 | `org.mybatis.spring.mapper.ClassPathMapperScanner` |
+| Spring事务 | `org.mybatis.spring.transaction.SpringManagedTransactionFactory` |
+
+## 🎯 Spring 扩展点运用
+
+| 扩展点 | 作用 |
+|-------|------|
+| `FactoryBean<T>` | 自定义Bean创建逻辑 |
+| `InitializingBean` | Bean初始化后回调 |
+| `BeanDefinitionRegistryPostProcessor` | 动态注册BeanDefinition |
+| `ApplicationContextAware` | 获取ApplicationContext |
+
+## 📝 配置示例
+
+```xml
+<!-- SqlSessionFactory -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="configLocation" value="mybatis/SqlMapConfig.xml" />
+    <property name="dataSource" ref="dataSource" />
+</bean>
+
+<!-- Mapper扫描 -->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="com.iyang.sm.mapper" />
+</bean>
+```
+
+---
+
 ## 				MyBatis with Spring
 
 

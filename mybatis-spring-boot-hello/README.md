@@ -1,3 +1,90 @@
+# MyBatis + SpringBoot 整合分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![SpringBoot](https://img.shields.io/badge/SpringBoot-2.4.1-green.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [上一模块：Spring整合](../mybatis-spring-hello) | [下一模块：PageHelper插件](../mybatis-pagehelper-analysis)
+
+---
+
+## 📖 模块简介
+
+本模块分析 MyBatis 与 SpringBoot 的整合过程，通过自动配置机制实现零配置整合，涉及 `@MapperScan` 注解和 `MybatisAutoConfiguration` 自动配置类。
+
+## 🔑 核心知识点
+
+| 类/注解 | 作用 |
+|---------|------|
+| `@MapperScan` | 扫描 Mapper 接口包 |
+| `MapperScannerRegistrar` | 注册 MapperScannerConfigurer |
+| `MybatisAutoConfiguration` | 自动配置 SqlSessionFactory |
+| `MybatisProperties` | 配置属性绑定 |
+| `spring.factories` | SPI 自动配置入口 |
+
+## 📊 整合流程
+
+```
+SpringBoot启动
+    ↓
+读取 spring.factories (EnableAutoConfiguration)
+    ↓   → 加载 MybatisAutoConfiguration
+    ↓
+@MapperScan 注解解析
+    ↓   → 注册 MapperScannerConfigurer
+    ↓
+MybatisAutoConfiguration.sqlSessionFactory()
+    ↓   → 创建 SqlSessionFactoryBean
+    ↓
+MybatisAutoConfiguration.sqlSessionTemplate()
+    ↓   → 创建 SqlSessionTemplate
+    ↓
+MapperScannerConfigurer.postProcessBeanDefinitionRegistry()
+    ↓   → 扫描 Mapper 接口并注册
+    ↓
+整合完成
+```
+
+## 🔗 核心源码路径
+
+| 功能 | 源码路径 |
+|-----|---------|
+| 注解扫描 | `org.mybatis.spring.annotation.MapperScan` |
+| 注册器 | `org.mybatis.spring.annotation.MapperScannerRegistrar` |
+| 自动配置 | `org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration` |
+| 配置属性 | `org.mybatis.spring.boot.autoconfigure.MybatisProperties` |
+| Session模板 | `org.mybatis.spring.SqlSessionTemplate` |
+
+## 🎯 自动配置关键点
+
+| 机制 | 说明 |
+|-----|------|
+| `@ConditionalOnMissingBean` | Bean不存在时才创建 |
+| `spring.factories` | SpringBoot SPI机制 |
+| `@ConfigurationProperties` | 属性绑定 |
+
+## 📝 配置示例
+
+```properties
+# application.properties
+mybatis.config-location=mybatis-config.xml
+mybatis.mapper-locations=mapper/*.xml
+mybatis.type-aliases-package=com.iyang.mybatis.pojo
+```
+
+```java
+@SpringBootApplication
+@MapperScan("com.iyang.mybatis.mapper")
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+---
+
 ## 			   MyBatis With SpringBoot
 
 

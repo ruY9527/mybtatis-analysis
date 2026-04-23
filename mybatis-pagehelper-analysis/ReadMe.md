@@ -1,3 +1,51 @@
+# MyBatis PageHelper 分页插件分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![PageHelper](https://img.shields.io/badge/PageHelper-5.1.10-blue.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [上一模块：SpringBoot整合](../mybatis-spring-boot-hello)
+
+---
+
+## 📖 模块简介
+
+本模块分析 PageHelper 分页插件的实现原理，通过 MyBatis 插件机制（Interceptor接口）拦截查询语句，自动实现分页功能。
+
+## 🔑 核心知识点
+
+| 概念 | 说明 |
+|-----|------|
+| **插件机制** | MyBatis 通过 Interceptor 接口提供扩展能力 |
+| **拦截签名** | `@Intercepts` + `@Signature` 定义拦截目标 |
+| **方言抽象** | `Dialect` 接口支持多种数据库 |
+| **ThreadLocal** | `PageHelper` 使用 ThreadLocal 存储分页参数 |
+
+## 🔗 核心源码路径
+
+| 类 | 路径 | 说明 |
+|----|------|------|
+| `PageInterceptor` | `com.github.pagehelper.PageInterceptor` | 拦截器核心实现 |
+| `PageHelper` | `com.github.pagehelper.PageHelper` | 分页参数设置入口 |
+| `Dialect` | `com.github.pagehelper.Dialect` | 数据库方言抽象 |
+| `ExecutorUtil` | `com.github.pagehelper.util.ExecutorUtil` | 分页SQL执行工具 |
+
+## 🎯 插件配置示例
+
+```xml
+<plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+        <property name="offsetAsPageNum" value="true" />
+        <property name="rowBoundsWithCount" value="true" />
+        <property name="pageSizeZero" value="true" />
+        <property name="reasonable" value="false" />
+    </plugin>
+</plugins>
+```
+
+---
+
 ##          							MyBatis 分页插件阅读
 
 

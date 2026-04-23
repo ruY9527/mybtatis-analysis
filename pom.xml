@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.iyang</groupId>
+    <artifactId>mybatis-analysis</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>MyBatis Analysis</name>
+    <description>MyBatis 源码深度分析与学习项目</description>
+
+    <!-- 子模块列表 -->
+    <modules>
+        <module>mybatis-work-flow</module>
+        <module>mybatis-xml-config</module>
+        <module>mybatis-mapper-xml</module>
+        <module>mybatis-cache-analysis</module>
+        <module>mybatis-spring-hello</module>
+        <module>mybatis-spring-boot-hello</module>
+        <module>mybatis-pagehelper-analysis</module>
+    </modules>
+
+    <!-- 公共属性 -->
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        <!-- 公共依赖版本 -->
+        <mybatis.version>3.5.4</mybatis.version>
+        <mybatis-spring.version>2.0.6</mybatis-spring.version>
+        <mysql-connector.version>5.1.48</mysql-connector.version>
+        <junit.version>4.13</junit.version>
+        <pagehelper.version>5.1.10</pagehelper.version>
+    </properties>
+
+    <!-- 公共依赖管理（可选使用） -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- MyBatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <!-- MyBatis-Spring -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+            </dependency>
+
+            <!-- MySQL Connector -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+
+            <!-- PageHelper -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!-- JUnit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 构建配置 -->
+    <build>
+        <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 项目信息 -->
+    <url>https://github.com/baoyang23/mybatis-analysis</url>
+    
+    <developers>
+        <developer>
+            <id>baoyang</id>
+            <name>baoyang</name>
+            <email>baoyang23@github</email>
+        </developer>
+    </developers>
+
+    <!-- 许可证 -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+</project>

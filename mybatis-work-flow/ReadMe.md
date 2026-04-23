@@ -1,3 +1,71 @@
+# MyBatis HelloWorld 与执行流程分析
+
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.4-orange.svg)
+![Java](https://img.shields.io/badge/Java-1.8-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
+
+> [返回主目录](../README.md) | [下一模块：配置文件解析](../mybatis-xml-config)
+
+---
+
+## 📖 模块简介
+
+本模块是 MyBatis 学习的入门篇，通过 HelloWorld 示例，系统梳理 MyBatis 的整体执行流程，从配置文件加载到 SQL 执行的完整链路。
+
+## 🔑 核心知识点
+
+| 步骤 | 核心类 | 说明 |
+|-----|--------|------|
+| 1️⃣ 配置文件加载 | `Resources`、`ClassLoaderWrapper` | 多 ClassLoader 策略加载配置 |
+| 2️⃣ 构建 SqlSessionFactory | `SqlSessionFactoryBuilder`、`XMLConfigBuilder` | 解析配置，构建工厂 |
+| 3️⃣ 获取 SqlSession | `DefaultSqlSessionFactory`、`Executor` | 创建会话，初始化执行器 |
+| 4️⃣ 获取 Mapper 代理 | `MapperProxyFactory`、`MapperProxy` | JDK 动态代理生成接口实现 |
+| 5️⃣ 执行 SQL | `MapperMethod`、`BaseExecutor` | SQL 执行与结果映射 |
+
+## 🗂️ 目录结构
+
+```
+mybatis-work-flow/
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com/iyang/mybatis/
+│       │       ├── InitHelloMyBatis.java    # 入口类
+│       │       ├── mapper/
+│       │       │   └── BlogMapper.java      # Mapper接口
+│       │       └── pojo/
+│       │           └── TbBlog.java          # 实体类
+│       └── resources/
+│           ├── mybatis-config.xml           # MyBatis配置文件
+│           ├── mapper/
+│           │   └── BlogMapper.xml           # Mapper XML
+│           └── sql/
+│               └── *.sql                    # 数据库脚本
+└── pom.xml
+```
+
+## 🚀 快速运行
+
+```bash
+# 1. 创建数据库并执行 sql 目录下的脚本
+# 2. 修改 mybatis-config.xml 中的数据库连接信息
+# 3. 运行 InitHelloMyBatis.java 的 main 方法
+```
+
+## 🔗 相关源码路径
+
+| 功能 | 源码路径 |
+|-----|---------|
+| 配置文件加载 | `org.apache.ibatis.io.Resources` |
+| ClassLoader包装 | `org.apache.ibatis.io.ClassLoaderWrapper` |
+| 配置解析 | `org.apache.ibatis.builder.xml.XMLConfigBuilder` |
+| 全局配置 | `org.apache.ibatis.session.Configuration` |
+| 会话工厂 | `org.apache.ibatis.session.defaults.DefaultSqlSessionFactory` |
+| 执行器 | `org.apache.ibatis.executor.BaseExecutor` |
+| Mapper代理 | `org.apache.ibatis.binding.MapperProxy` |
+
+---
+
 ## 						MyBatis之HelloWorld
 
 
